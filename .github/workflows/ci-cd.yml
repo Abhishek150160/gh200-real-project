@@ -28,6 +28,11 @@ jobs:
       # 4️⃣ Build Docker image
       - name: Build Docker Image
         run: docker build -t gh200-app .
+      
+      # built image name
+      - name: List Docker images
+        run: docker images
+
 
       # 5️⃣ Print success message
       - name: Done
