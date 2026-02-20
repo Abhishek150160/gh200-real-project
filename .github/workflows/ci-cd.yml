@@ -1,31 +1,32 @@
-name: Build and Push to GitHub Packages
+name: Build and Push to GHCR
 
 on:
   push:
     branches:
       - main
 
+# Required permissions to push packages
 permissions:
   contents: read
   packages: write
 
 jobs:
-  publish:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
+      # 1️⃣ Checkout repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Login to GitHub Container Registry
+      # 2️⃣ Login to GitHub Container Registry (GHCR)
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # 3️⃣ Build Docker image
-      - name: Build image
-        run: docker build -t ghcr.io/${{ github.repository }}/gh200-app .
+      # 3️⃣ Build Docker image (LOWERCASE username 🔥)
+      - name: Build Docker image
+        run: docker build -t ghcr.io/abhishek150160/gh200-app:latest .
 
-      # 4️⃣ Push image
-      - name: Push image
-        run: docker push ghcr.io/${{ github.repository }}/gh200-app
+      # 4️⃣ Push image to GitHub Packages
+      - name: Push Docker image
+        run: docker push ghcr.io/abhishek150160/gh200-app:latest
